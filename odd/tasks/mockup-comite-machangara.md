@@ -1,7 +1,7 @@
 # Maqueta UI/UX — Comité de Conservación de la Cuenca del Río Machángara
 
-Objetivo: crear una maqueta de diseño (solo UI/UX, sin funcionalidad) del sitio web del Comité en OpenPencil (MCP en `http://127.0.0.1:3100/mcp`), con 7 páginas según el mapa de sitio del usuario.
-Branch/delivery: N/A (proyecto de diseño, sin repo git). Ejecución: un subagente `gentle-ai-worker` por página, secuencial (el documento MCP es estado compartido). Verificación: visual (`get_screenshot`) + `finalize_design` + `enrich_images` + export PNG y guardado `.op`.
+Objetivo: crear una maqueta de diseño (solo UI/UX, sin funcionalidad) del sitio web del Comité en OpenPencil, con 7 páginas según el mapa de sitio del usuario.
+Branch/delivery: N/A (proyecto de diseño, sin repo git). Ejecución: un subagente `gentle-ai-worker` por página, secuencial, vía CLI `op` en modo archivo (`--file`) sobre `maqueta/machangara-ui.op` (fuente de verdad; el MCP/daemon ya NO se usa). Verificación: estructural con `op get`/`op layout` (el renderer no pinta fills; el render correcto lo hace la app desktop). Cierre: `op vars`/`op page list` + guardado `.op` + export PNG desde la app desktop (manual).
 
 ## Sistema de diseño (obligatorio en todas las páginas)
 
@@ -51,12 +51,12 @@ S9 **Diseño** — apariencia sencilla y ordenada, textos breves, espacio entre 
 
 - T0 setup — paleta/7 páginas creadas, shell base — **hecho** (variables `set_variables`, páginas "Inicio/Conócenos/Noticias/Documentos/Galería/Agenda/Contacto").
 - T1 Inicio (S1, S8, S9) — delegated (worker), **hecho**. Mapa interactivo + Noticias y redes + Testimonios + footer (worker) y Presentación + Logros + Conservación (orquestador vía MCP HTTP). Orden final: Hero, Presentación, Logros, Conservación, Mapa, Noticias y redes, Testimonios. get_design_quality: geometry 0, layout 0. Altura 3653px.
-- T2 Conócenos (S2) — delegated (worker).
-- T3 Noticias (S3) — delegated (worker).
-- T4 Documentos (S4) — delegated (worker).
-- T5 Galería (S5) — delegated (worker).
-- T6 Agenda (S6) — delegated (worker).
-- T7 Contacto (S7) — delegated (worker).
+- T2 Conócenos (S2) — delegated (worker), **hecho** (en archivo `.op`: root n367 + Topbar/Navbar/Body/Footer/Dropdown; 11 secciones verificadas vía `op get`).
+- T3 Noticias (S3) — delegated (worker), CLI file mode.
+- T4 Documentos (S4) — delegated (worker), CLI file mode.
+- T5 Galería (S5) — delegated (worker), CLI file mode.
+- T6 Agenda (S6) — delegated (worker), CLI file mode.
+- T7 Contacto (S7) — delegated (worker), CLI file mode.
 - T8 Cierre (S9) — inline (orquestador): screenshots finales, `finalize_design`, `enrich_images`, guardar `.op` y exportar PNGs a la carpeta del proyecto.
 
 ## Log
@@ -72,3 +72,5 @@ L4 (2026-11-09) El usuario instaló el CLI: `brew install zseven-w/openpencil/op
 L5 (2026-11-09) Renderer roto del daemon MCP: get_screenshot/export_frames NO pintan los fills (solo strokes/bordes; alpha=0 en todo el PNG). Las screenshots NO sirven para QA visual en este despliegue. Estrategia de QA: get_design_quality + snapshot_layout + read_nodes (modelo del documento). Canal alternativo verificado: el daemon habla MCP JSON-RPC sobre HTTP en 127.0.0.1:3100/mcp con session fija `mcp-session-id: openpencil` → script `odd/openpencil/verify-render.py` permite screenshots/sampling vía HTTP (también con alpha rota; el modo `fix` corrige alpha en PNGs). Las secciones faltantes de Inicio se insertaron por este canal (insert_node + move_node). El render correcto lo hace la app desktop de OpenPencil, no el daemon MCP.
 
 L6 (2026-11-09) El usuario interrumpió el lanzamiento de T2 y pidió guardar el estado en Engram. Estado guardado (observation #687, topic `odd/mockup-comite-machangara/tasks`). T2 quedó A MEDIO: página 1 "Conócenos" con root n367 e hijos Topbar n368, Navbar n381, Body n418, Footer n446 (height 1 = incompleto) y Dropdown n396 MAL UBICADO (sibling de n367 en (450,190); debería estar dentro del navbar en y76). Plan de reanudación recomendado: eliminar n367 y reconstruir la página 1 desde `odd/openpencil/specs/t2-conocenos.md`. Pendientes: T2–T7 (una página por worker secuencial) y T8 (finalize_design, enrich_images, save .op, exports). QA solo por diagnósticos del motor (renderer del MCP no pinta fills).
+
+L7 (2026-11-09) Cambio de herramienta pedido por el usuario: "vamos a continuar donde nos quedamos pero en lugar de usar el mcp de openpencial vamos a usar el CLI op con el archivo @maqueta/machangara-ui.op". Verificado sobre `maqueta/machangara-ui.op` (612 KB, exportado 11:32): T2 quedó COMPLETO en el archivo (root n367 con Topbar/Navbar/Body/Footer/Dropdown dentro del root; 11 secciones en Contenido n445; footer completo; dropdown n396 en (450,190) como overlay). Las páginas 2-6 siguen vacías. Toolchain CLI v0.7.6 en modo archivo (sin daemon, `op status` running:false) verificado: `op page list --file` ✓; `op get --id X --page P --file` ✓ (sin `--page` solo lee la página 1); `op insert --file --page P '<json>'` inserta en la raíz de la página (NO usar `--parent <pageId>`: se pierde el nodo); `op insert --parent <id>` para hijos ✓; `op update` merge parcial ✓; `op layout` snapshot estructural ✓; la re-serialización compacta del CLI no pierde nodos (823→825 con 2 inserts de prueba). Regla: siempre pasar `--file` y `--page` en cada comando. Patrón por página: raíz frame 1200×0 vertical bg #FBFAF6 + shell (Topbar/Navbar/Body/Sidebar/Footer) + secciones, todo con `icon_font` (sin post-process). QA estructural con `op get`. El plugin `openpencil-skill` quedó instalado en la config global de opencode (requiere restart).
