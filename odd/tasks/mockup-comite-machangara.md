@@ -53,7 +53,7 @@ S9 **Diseño** — apariencia sencilla y ordenada, textos breves, espacio entre 
 - T1 Inicio (S1, S8, S9) — delegated (worker), **hecho**. Mapa interactivo + Noticias y redes + Testimonios + footer (worker) y Presentación + Logros + Conservación (orquestador vía MCP HTTP). Orden final: Hero, Presentación, Logros, Conservación, Mapa, Noticias y redes, Testimonios. get_design_quality: geometry 0, layout 0. Altura 3653px.
 - T2 Conócenos (S2) — delegated (worker), **hecho** (en archivo `.op`: root n367 + Topbar/Navbar/Body/Footer/Dropdown; 11 secciones verificadas vía `op get`).
 - T3 Noticias (S3) — delegated (worker), **hecho** (root YBRT5xtKjyR3Bp0npG-e6, 236 nodos, 5 secciones: Encabezado/Destacada/Noticias del Comité/En los medios/Redes sociales).
-- T4 Documentos (S4) — delegated (worker), CLI file mode.
+- T4 Documentos (S4) — delegated (worker), **hecho** (root MoTv6fKw56VdQaWJw7Q4M, 226 nodos: Encabezado + Repositorio con toolbar/chips/8 filas/nota).
 - T5 Galería (S5) — delegated (worker), CLI file mode.
 - T6 Agenda (S6) — delegated (worker), CLI file mode.
 - T7 Contacto (S7) — delegated (worker), CLI file mode.
