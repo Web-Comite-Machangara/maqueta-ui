@@ -290,6 +290,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 .media-md { min-height: 160px; }
 .media-sm { width: 150px; min-height: 110px; flex: none; border-radius: 10px; }
 
+/* Foto de "Conservación de la cuenca" (Inicio) */
+#inicio .split .media-tall {
+  background: url("img/paramo-andino.webp") center 60% / cover no-repeat;
+}
+#inicio .split .media-tall span { display: none; }
+
 .feature-list { display: flex; flex-direction: column; gap: 12px; }
 .feature-list li { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; }
 .feature-icon {
