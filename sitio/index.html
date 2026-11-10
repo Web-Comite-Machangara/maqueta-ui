@@ -687,55 +687,45 @@
           <header class="page-header">
             <p class="breadcrumb">Inicio / Agenda</p>
             <h1 class="page-title" id="agenda-title">Agenda</h1>
-            <p class="lead">Actividades, eventos y convocatorias del Comité. No se requiere inscripción previa.</p>
+            <p class="lead">Actividades, eventos y convocatorias del Comité.</p>
           </header>
 
-          <section class="section">
-            <div class="banners">
-              <article class="banner banner-grad">
-                <div><span class="chip chip-glass">CONVOCATORIA</span><h2 class="banner-title">Minga de reforestación — margen del río Machángara</h2><p class="banner-date"><i data-lucide="calendar"></i> Vie 14 nov · 08:30 · Sayausí</p></div>
-                <i data-lucide="arrow-up-right" class="banner-arrow"></i>
-              </article>
-              <article class="banner banner-sand">
-                <div><span class="chip chip-green">CONVOCATORIA</span><h2 class="banner-title">Monitoreo participativo de calidad del agua</h2><p class="banner-date"><i data-lucide="calendar"></i> Mar 18 nov · 09:00 · Estación Chulco</p></div>
-                <i data-lucide="arrow-up-right" class="banner-arrow"></i>
-              </article>
+          <section class="section agenda-upcoming">
+            <div class="agenda-head">
+              <h2 class="section-title" id="agenda-events-title">Próximos eventos</h2>
+              <div class="agenda-controls">
+                <button class="icon-btn" type="button" id="agenda-prev" aria-label="Eventos anteriores"><i data-lucide="chevron-left"></i></button>
+                <button class="icon-btn" type="button" id="agenda-next" aria-label="Eventos siguientes"><i data-lucide="chevron-right"></i></button>
+              </div>
             </div>
+            <div class="agenda-carousel" id="agenda-carousel" tabindex="0" aria-label="Carrusel de eventos">
+              <div class="agenda-track" id="agenda-track"></div>
+            </div>
+            <div class="agenda-dots" id="agenda-dots" role="tablist" aria-label="Posiciones del carrusel"></div>
+            <p class="agenda-status" id="agenda-status" role="status" hidden></p>
+            <button class="link-arrow agenda-reset" id="agenda-reset" type="button" hidden>Volver a próximos eventos <i data-lucide="arrow-left"></i></button>
+            <p class="note">Contenido demostrativo editable. Los eventos no corresponden a convocatorias oficiales confirmadas.</p>
           </section>
 
           <section class="section">
             <div class="calendar-card">
               <div class="calendar-head">
-                <div><h2 class="section-title">Noviembre 2026</h2><p class="section-sub">Calendario de actividades</p></div>
-                <div class="cal-nav"><button class="icon-btn" type="button" aria-label="Mes anterior" data-demo><i data-lucide="chevron-left"></i></button><button class="icon-btn" type="button" aria-label="Mes siguiente" data-demo><i data-lucide="chevron-right"></i></button></div>
+                <div><h2 class="section-title" id="cal-title">Noviembre de 2026</h2><p class="section-sub">Calendario de actividades</p></div>
+                <div class="cal-nav"><button class="icon-btn" type="button" id="cal-prev" aria-label="Mes anterior"><i data-lucide="chevron-left"></i></button><button class="icon-btn" type="button" id="cal-next" aria-label="Mes siguiente"><i data-lucide="chevron-right"></i></button></div>
               </div>
               <div class="weekdays" aria-hidden="true"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
               <div class="cal-grid" id="cal-grid" role="grid" aria-label="Calendario de noviembre de 2026"></div>
-              <div class="legend legend-tight"><span class="legend-item"><span class="dot dot-blue"></span> Actividad programada</span></div>
-              <p class="note">Vista referencial de noviembre 2026; el calendario se actualizará con la agenda oficial.</p>
+              <div class="legend legend-tight"><span class="legend-item"><span class="dot dot-green"></span> Con evento</span></div>
             </div>
           </section>
 
-          <section class="section">
-            <h2 class="section-title">Próximas actividades</h2>
-            <div class="events">
-              <article class="event-row">
-                <span class="date-chip"><b>14</b><small>NOV</small></span>
-                <div class="event-info"><h3 class="event-title">Jornada de reforestación — margen del río Machángara</h3><p class="event-meta"><span><i data-lucide="clock"></i> Vie 14 nov · 08:30</span><span><i data-lucide="map-pin"></i> Parroquia Sayausí</span></p></div>
-                <span class="event-tag event-tag-sand">Convocatoria</span>
-              </article>
-              <article class="event-row">
-                <span class="date-chip"><b>18</b><small>NOV</small></span>
-                <div class="event-info"><h3 class="event-title">Monitoreo participativo de calidad del agua</h3><p class="event-meta"><span><i data-lucide="clock"></i> Mar 18 nov · 09:00</span><span><i data-lucide="map-pin"></i> Estación Chulco</span></p></div>
-                <span class="event-tag event-tag-blue">Monitoreo</span>
-              </article>
-              <article class="event-row">
-                <span class="date-chip"><b>25</b><small>NOV</small></span>
-                <div class="event-info"><h3 class="event-title">Reunión ordinaria del Comité</h3><p class="event-meta"><span><i data-lucide="clock"></i> Mar 25 nov · 10:00</span><span><i data-lucide="map-pin"></i> Sala de sesiones, ETAPA EP</span></p></div>
-                <span class="event-tag event-tag-green">Reunión</span>
-              </article>
+          <div class="modal" id="agenda-modal" hidden>
+            <div class="modal-backdrop" data-close-agenda-modal></div>
+            <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="agenda-modal-title">
+              <div class="modal-head"><h2>Detalle del evento</h2><button class="icon-btn" type="button" aria-label="Cerrar" data-close-agenda-modal><i data-lucide="x"></i></button></div>
+              <div class="agenda-modal-body" id="agenda-modal-body"></div>
             </div>
-          </section>
+          </div>
         </section>
 
         <!-- ================= CONTACTO ================= -->
@@ -825,6 +815,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="agenda.config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

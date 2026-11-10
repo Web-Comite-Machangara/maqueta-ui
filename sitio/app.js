@@ -85,6 +85,14 @@
     currentPage = page;
     setActiveNav(page);
     setSidebar(page);
+    if (page === "agenda") {
+      if (!agendaInitialized) {
+        agendaInitialized = true;
+        initAgenda();
+      } else {
+        window.requestAnimationFrame(updateAgendaCarouselControls);
+      }
+    }
     document.title = page === "inicio" ? BASE_TITLE : TITLES[page] + " — Comité Machángara";
 
     var nav = $("#nav-principal");
@@ -242,35 +250,364 @@
     });
   });
 
-  /* ---------- calendar ---------- */
-  var calGrid = $("#cal-grid");
-  if (calGrid) {
-    var weeks = [
-      [26, 27, 28, 29, 30, 31, 1],
-      [2, 3, 4, 5, 6, 7, 8],
-      [9, 10, 11, 12, 13, 14, 15],
-      [16, 17, 18, 19, 20, 21, 22],
-      [23, 24, 25, 26, 27, 28, 29],
-      [30, 1, 2, 3, 4, 5, 6]
-    ];
-    var TODAY = 9;
-    var EVENTS = [13, 14, 18, 25];
-    var outOfMonth = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6]];
-    var isOut = function (w, d) { return outOfMonth.some(function (p) { return p[0] === w && p[1] === d; }); };
+  /* ---------- agenda: carrusel, calendario y modal ---------- */
+  var agendaInitialized = false;
+  var agendaEvents = [];
+  var agendaEventsByDate = {};
+  var agendaViewYear = 2026;
+  var agendaViewMonth = 10;
+  var agendaSelectedDate = null;
+  var agendaLastFocus = null;
+  var agendaPageStep = 0;
+
+  function toISODate(date) {
+    var year = date.getFullYear();
+    var month = String(date.getMonth() + 1).padStart(2, "0");
+    var day = String(date.getDate()).padStart(2, "0");
+    return year + "-" + month + "-" + day;
+  }
+
+  function parseAgendaDate(value) {
+    var parts = value.split("-");
+    return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  }
+
+  function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  function formatLongDate(value) {
+    return parseAgendaDate(value).toLocaleDateString("es-EC", {
+      day: "numeric", month: "long", year: "numeric"
+    });
+  }
+
+  function formatShortDate(value) {
+    return parseAgendaDate(value).toLocaleDateString("es-EC", {
+      day: "numeric", month: "short", year: "numeric"
+    });
+  }
+
+  function eventDateTime(event) {
+    var parts = event.date.split("-");
+    var time = (event.time || "00:00").split(":");
+    return new Date(
+      Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]),
+      Number(time[0] || 0), Number(time[1] || 0)
+    );
+  }
+
+  function sortAgendaEvents(a, b) {
+    return eventDateTime(a) - eventDateTime(b);
+  }
+
+  function loadAgendaData() {
+    var source = window.SITE_AGENDA_EVENTS || [];
+    agendaEvents = source.filter(function (event) {
+      return event && event.title && event.date && event.category;
+    }).sort(sortAgendaEvents);
+    agendaEventsByDate = {};
+    agendaEvents.forEach(function (event) {
+      if (!agendaEventsByDate[event.date]) agendaEventsByDate[event.date] = [];
+      agendaEventsByDate[event.date].push(event);
+    });
+  }
+
+  function upcomingAgendaEvents() {
+    var now = new Date();
+    return agendaEvents.filter(function (event) {
+      return eventDateTime(event) >= now;
+    });
+  }
+
+  function agendaEventsForDate(date) {
+    return (agendaEventsByDate[date] || []).slice().sort(sortAgendaEvents);
+  }
+
+  function eventCategoryClass(event) {
+    return event.category === "Convocatoria" ? "event-tag-sand" : "event-tag-blue";
+  }
+
+  function eventCardElement(event) {
+    var card = document.createElement("article");
+    card.className = "event-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-haspopup", "dialog");
+    card.setAttribute("aria-label", "Ver detalle de " + event.title);
+    card.innerHTML =
+      '<span class="event-tag ' + eventCategoryClass(event) + '">' + event.category + "</span>" +
+      '<h3 class="event-title">' + event.title + "</h3>" +
+      '<p class="event-meta">' +
+        '<span><i data-lucide="calendar"></i> ' + formatShortDate(event.date) + "</span>" +
+        '<span><i data-lucide="clock"></i> ' + event.time + "</span>" +
+        '<span><i data-lucide="map-pin"></i> ' + event.place + "</span>" +
+      "</p>";
+    card.addEventListener("click", function () {
+      openAgendaModal(event, card);
+    });
+    card.addEventListener("keydown", function (keyEvent) {
+      if (keyEvent.key === "Enter" || keyEvent.key === " ") {
+        keyEvent.preventDefault();
+        openAgendaModal(event, card);
+      }
+    });
+    return card;
+  }
+
+  function openAgendaModal(event, trigger) {
+    var modal = $("#agenda-modal");
+    var body = $("#agenda-modal-body");
+    if (!modal || !body) return;
+    agendaLastFocus = trigger || document.activeElement;
+    body.innerHTML =
+      '<span class="event-tag ' + eventCategoryClass(event) + '">' + event.category + "</span>" +
+      '<h3 class="agenda-modal-title" id="agenda-modal-title">' + event.title + "</h3>" +
+      '<div class="agenda-modal-meta">' +
+        '<p><i data-lucide="calendar"></i> ' + formatLongDate(event.date) + "</p>" +
+        '<p><i data-lucide="clock"></i> ' + event.time + "</p>" +
+        '<p><i data-lucide="map-pin"></i> ' + event.place + "</p>" +
+      "</div>" +
+      '<p class="agenda-modal-desc">' + event.description + "</p>";
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    icons();
+    var closeBtn = $("[data-close-agenda-modal].icon-btn", modal);
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeAgendaModal() {
+    var modal = $("#agenda-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    if (agendaLastFocus && typeof agendaLastFocus.focus === "function") {
+      agendaLastFocus.focus();
+    }
+  }
+
+  function renderAgendaCalendar() {
+    var grid = $("#cal-grid");
+    if (!grid) return;
+    var title = $("#cal-title");
+    var monthDate = new Date(agendaViewYear, agendaViewMonth, 1);
+    var monthLabel = capitalize(monthDate.toLocaleDateString("es-EC", {
+      month: "long", year: "numeric"
+    }));
+    if (title) title.textContent = monthLabel;
+    grid.setAttribute("aria-label", "Calendario de " + monthLabel);
+
+    var todayISO = toISODate(new Date());
+    var firstDay = monthDate.getDay();
+    var offset = (firstDay + 6) % 7;
+    var start = new Date(agendaViewYear, agendaViewMonth, 1 - offset);
     var html = "";
-    weeks.forEach(function (week, wi) {
-      week.forEach(function (day, di) {
-        var classes = ["cal-cell"];
-        if (isOut(wi, di)) classes.push("is-out");
-        if (day === TODAY && !isOut(wi, di)) classes.push("is-today");
-        var hasEvent = EVENTS.indexOf(day) !== -1 && !isOut(wi, di);
-        html += '<div class="' + classes.join(" ") + '" role="gridcell" aria-label="' + day + ' de noviembre de 2026' + (day === TODAY ? ', hoy' : "") + '">';
-        html += "<span>" + day + "</span>";
-        if (hasEvent) html += '<span class="cal-dot" aria-hidden="true"></span>';
-        html += "</div>";
+
+    for (var i = 0; i < 42; i += 1) {
+      var date = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      var iso = toISODate(date);
+      var inMonth = date.getMonth() === agendaViewMonth && date.getFullYear() === agendaViewYear;
+      var dayEvents = inMonth ? agendaEventsForDate(iso) : [];
+      var hasEvent = dayEvents.length > 0;
+      var selected = iso === agendaSelectedDate;
+      var today = iso === todayISO && inMonth;
+      var classes = ["cal-cell"];
+      if (!inMonth) classes.push("is-out");
+      if (today) classes.push("is-today");
+      if (selected) classes.push("is-selected");
+      if (hasEvent) classes.push("has-event");
+      var label = capitalize(date.toLocaleDateString("es-EC", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+      }));
+      if (hasEvent) label += ", con evento";
+      if (selected) label += ", seleccionado";
+
+      html += '<button type="button" class="' + classes.join(" ") + '" data-date="' + iso + '" role="gridcell" aria-label="' + label + '" aria-selected="' + (selected ? "true" : "false") + '"' + (inMonth ? "" : " disabled") + ">" +
+        "<span>" + date.getDate() + "</span>" +
+        (hasEvent ? '<span class="cal-dot" aria-hidden="true"></span>' : "") +
+        "</button>";
+    }
+
+    grid.innerHTML = html;
+    $$(".cal-cell[data-date]", grid).forEach(function (cell) {
+      if (cell.disabled) return;
+      cell.addEventListener("click", function () {
+        agendaSelectedDate = cell.getAttribute("data-date");
+        renderAgendaCalendar();
+        renderAgendaSelection(agendaSelectedDate);
       });
     });
-    calGrid.innerHTML = html;
+  }
+
+  function renderAgendaCarousel(events, mode) {
+    var carousel = $("#agenda-carousel");
+    var track = $("#agenda-track");
+    var dots = $("#agenda-dots");
+    var status = $("#agenda-status");
+    var reset = $("#agenda-reset");
+    var controls = $(".agenda-controls");
+    if (!carousel || !track) return;
+    track.innerHTML = "";
+    var list = events.slice().sort(sortAgendaEvents);
+
+    if (!list.length) {
+      carousel.hidden = true;
+      if (dots) { dots.hidden = true; dots.innerHTML = ""; }
+      if (controls) controls.hidden = true;
+      if (status) {
+        status.hidden = false;
+        status.textContent = mode === "date"
+          ? "No hay eventos programados para este día"
+          : "No hay próximos eventos programados.";
+      }
+    } else {
+      carousel.hidden = false;
+      if (dots) dots.hidden = false;
+      if (controls) controls.hidden = false;
+      if (status) status.hidden = true;
+      list.forEach(function (event) {
+        track.appendChild(eventCardElement(event));
+      });
+    }
+
+    if (reset) reset.hidden = !agendaSelectedDate;
+    icons();
+    carousel.scrollLeft = 0;
+    window.requestAnimationFrame(updateAgendaCarouselControls);
+  }
+
+  function renderAgendaSelection(date) {
+    var title = $("#agenda-events-title");
+    if (title) title.textContent = "Eventos del " + formatLongDate(date);
+    renderAgendaCarousel(agendaEventsForDate(date), "date");
+  }
+
+  function showAgendaUpcoming() {
+    agendaSelectedDate = null;
+    var title = $("#agenda-events-title");
+    if (title) title.textContent = "Próximos eventos";
+    renderAgendaCalendar();
+    renderAgendaCarousel(upcomingAgendaEvents(), "upcoming");
+  }
+
+  function updateAgendaCarouselActive() {
+    var carousel = $("#agenda-carousel");
+    var dots = $("#agenda-dots");
+    if (!carousel || !dots) return;
+    var pages = dots.children.length;
+    if (!pages) return;
+    var maxScroll = carousel.scrollWidth - carousel.clientWidth;
+    var atEnd = maxScroll > 0 && carousel.scrollLeft >= maxScroll - 2;
+    var index = Math.round(carousel.scrollLeft / (agendaPageStep || 1));
+    if (atEnd) index = pages - 1;
+    index = Math.max(0, Math.min(pages - 1, index));
+    $$(".agenda-dot", dots).forEach(function (dot, i) {
+      dot.classList.toggle("is-active", i === index);
+      if (i === index) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+    var prev = $("#agenda-prev");
+    var next = $("#agenda-next");
+    if (prev) prev.disabled = carousel.scrollLeft <= 1;
+    if (next) next.disabled = atEnd;
+  }
+
+  function updateAgendaCarouselControls() {
+    var carousel = $("#agenda-carousel");
+    var track = $("#agenda-track");
+    var dots = $("#agenda-dots");
+    var prev = $("#agenda-prev");
+    var next = $("#agenda-next");
+    if (!carousel || !track || !dots) return;
+    var cards = $$(".event-card", track);
+    if (!cards.length || !carousel.clientWidth) {
+      if (prev) prev.disabled = true;
+      if (next) next.disabled = true;
+      dots.innerHTML = "";
+      return;
+    }
+    var gap = parseFloat(window.getComputedStyle(track).gap) || 16;
+    var cardWidth = cards[0].getBoundingClientRect().width;
+    if (!cardWidth) return;
+    var perView = Math.max(1, Math.round((carousel.clientWidth + gap) / (cardWidth + gap)));
+    var pages = Math.max(1, Math.ceil(cards.length / perView));
+    agendaPageStep = perView * (cardWidth + gap);
+
+    dots.innerHTML = "";
+    for (var i = 0; i < pages; i += 1) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "agenda-dot";
+      dot.setAttribute("aria-label", "Ir a la posición " + (i + 1));
+      dot.addEventListener("click", (function (page) {
+        return function () {
+          var max = carousel.scrollWidth - carousel.clientWidth;
+          carousel.scrollTo({
+            left: Math.min(page * agendaPageStep, max),
+            behavior: "smooth"
+          });
+        };
+      })(i));
+      dots.appendChild(dot);
+    }
+    updateAgendaCarouselActive();
+  }
+
+  function initAgenda() {
+    loadAgendaData();
+
+    var calPrev = $("#cal-prev");
+    var calNext = $("#cal-next");
+    var carousel = $("#agenda-carousel");
+    var prev = $("#agenda-prev");
+    var next = $("#agenda-next");
+    var reset = $("#agenda-reset");
+
+    if (calPrev) {
+      calPrev.addEventListener("click", function () {
+        agendaViewMonth -= 1;
+        if (agendaViewMonth < 0) { agendaViewMonth = 11; agendaViewYear -= 1; }
+        showAgendaUpcoming();
+      });
+    }
+    if (calNext) {
+      calNext.addEventListener("click", function () {
+        agendaViewMonth += 1;
+        if (agendaViewMonth > 11) { agendaViewMonth = 0; agendaViewYear += 1; }
+        showAgendaUpcoming();
+      });
+    }
+    if (carousel) {
+      carousel.addEventListener("scroll", function () {
+        window.requestAnimationFrame(updateAgendaCarouselActive);
+      });
+    }
+    if (prev && carousel) {
+      prev.addEventListener("click", function () {
+        carousel.scrollBy({ left: -agendaPageStep, behavior: "smooth" });
+      });
+    }
+    if (next && carousel) {
+      next.addEventListener("click", function () {
+        carousel.scrollBy({ left: agendaPageStep, behavior: "smooth" });
+      });
+    }
+    if (reset) reset.addEventListener("click", showAgendaUpcoming);
+
+    $$("[data-close-agenda-modal]").forEach(function (el) {
+      el.addEventListener("click", closeAgendaModal);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") closeAgendaModal();
+    });
+    window.addEventListener("resize", function () {
+      if (currentPage === "agenda") {
+        window.requestAnimationFrame(updateAgendaCarouselControls);
+      }
+    });
+
+    renderAgendaCalendar();
+    renderAgendaCarousel(upcomingAgendaEvents(), "upcoming");
   }
 
   /* ---------- gallery album modal ---------- */
