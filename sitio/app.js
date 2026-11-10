@@ -18,6 +18,73 @@
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function icons() { if (window.lucide && typeof window.lucide.createIcons === "function") window.lucide.createIcons(); }
 
+  /* ---------- videos institucionales ---------- */
+  function getYouTubeId(url) {
+    try {
+      var parsed = new URL(url, window.location.href);
+      var host = parsed.hostname.replace(/^www\./, "");
+      if (host === "youtu.be") return parsed.pathname.split("/")[1] || null;
+      if (host === "youtube.com" || host === "m.youtube.com") {
+        if (parsed.searchParams.get("v")) return parsed.searchParams.get("v");
+        var match = parsed.pathname.match(/\/(?:embed|shorts)\/([^/?#]+)/);
+        if (match) return match[1];
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function loadVideoMetadata(url, card) {
+    if (!window.fetch) return;
+    var titleEl = card.querySelector(".video-title");
+    var metaEl = card.querySelector(".video-meta");
+    // Endpoint oEmbed compatible con CORS; devuelve los metadatos de YouTube.
+    var endpoint = "https://noembed.com/embed?url=" + encodeURIComponent(url);
+    fetch(endpoint)
+      .then(function (response) {
+        if (!response.ok) throw new Error("metadata");
+        return response.json();
+      })
+      .then(function (data) {
+        if (data && data.title) titleEl.textContent = data.title;
+        if (data && data.author_name) metaEl.textContent = data.author_name;
+      })
+      .catch(function () {
+        // Se mantienen los textos discretos de respaldo.
+      });
+  }
+
+  function renderVideos() {
+    var grid = $("#video-grid");
+    if (!grid) return;
+    var urls = (window.SITE_VIDEOS || []).filter(function (url) {
+      return typeof url === "string" && url.trim();
+    });
+    grid.innerHTML = "";
+    urls.forEach(function (url) {
+      var id = getYouTubeId(url);
+      if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+      var card = document.createElement("a");
+      card.className = "video-card";
+      card.href = url;
+      card.target = "_blank";
+      card.rel = "noopener";
+      card.innerHTML =
+        '<div class="video-thumb media">' +
+          '<img class="video-thumb-img" src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" />' +
+          '<span class="play-btn"><i data-lucide="play"></i></span>' +
+        '</div>' +
+        '<div class="video-body">' +
+          '<h3 class="video-title">Video institucional</h3>' +
+          '<p class="video-meta">YouTube</p>' +
+        '</div>';
+      grid.appendChild(card);
+      loadVideoMetadata(url, card);
+    });
+    icons();
+  }
+
   /* ---------- toast ---------- */
   var toastEl = $("#toast");
   var toastTimer = null;
@@ -361,10 +428,14 @@
   });
 
   /* ---------- init ---------- */
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", onRoute);
-  } else {
+  function init() {
+    renderVideos();
     onRoute();
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
   }
   icons();
 })();
