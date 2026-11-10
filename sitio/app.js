@@ -274,6 +274,90 @@
   }
 
   /* ---------- gallery album modal ---------- */
+  var GALLERY = {
+    "Brigadas Forestales": [
+      { src: "img/galeria/Brigadas%20Forestales/Brigada%202.jpeg", alt: "Brigadas Forestales — Brigada 2", w: 1200, h: 900 },
+      { src: "img/galeria/Brigadas%20Forestales/Brigada1.jpeg", alt: "Brigadas Forestales — Brigada1", w: 960, h: 1280 },
+    ],
+    "Comite": [
+      { src: "img/galeria/Comite/comite%201.jpeg", alt: "Comite — comite 1", w: 1200, h: 554 },
+      { src: "img/galeria/Comite/comite%202.jpeg", alt: "Comite — comite 2", w: 960, h: 1280 },
+      { src: "img/galeria/Comite/comite%203.jpeg", alt: "Comite — comite 3", w: 1200, h: 900 },
+      { src: "img/galeria/Comite/comite%204.jpeg", alt: "Comite — comite 4", w: 1200, h: 713 },
+      { src: "img/galeria/Comite/comite%205.jpeg", alt: "Comite — comite 5", w: 1200, h: 554 },
+      { src: "img/galeria/Comite/comite%206.jpeg", alt: "Comite — comite 6", w: 1200, h: 551 },
+      { src: "img/galeria/Comite/comite%207.jpeg", alt: "Comite — comite 7", w: 1200, h: 554 },
+      { src: "img/galeria/Comite/comite%208.jpeg", alt: "Comite — comite 8", w: 1200, h: 554 },
+      { src: "img/galeria/Comite/comite%209.jpeg", alt: "Comite — comite 9", w: 1200, h: 554 },
+      { src: "img/galeria/Comite/comite%2010.jpeg", alt: "Comite — comite 10", w: 1200, h: 900 },
+      { src: "img/galeria/Comite/comite%2011.jpeg", alt: "Comite — comite 11", w: 960, h: 1280 },
+    ],
+    "Fauna": [
+      { src: "img/galeria/Fauna/fauna%201.jpg", alt: "Fauna — fauna 1", w: 1200, h: 900 },
+      { src: "img/galeria/Fauna/fauna%202.jpg", alt: "Fauna — fauna 2", w: 1200, h: 900 },
+    ],
+    "Hidrometeorología": [
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%201.jpg", alt: "Hidrometeorología — hidro 1", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%202.jpeg", alt: "Hidrometeorología — hidro 2", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%203.jpg", alt: "Hidrometeorología — hidro 3", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%204.jpeg", alt: "Hidrometeorología — hidro 4", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%205.jpeg", alt: "Hidrometeorología — hidro 5", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%206.jpeg", alt: "Hidrometeorología — hidro 6", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%207.jpeg", alt: "Hidrometeorología — hidro 7", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%208.jpeg", alt: "Hidrometeorología — hidro 8", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%209.jpeg", alt: "Hidrometeorología — hidro 9", w: 1200, h: 900 },
+      { src: "img/galeria/Hidrometeorologi%CC%81a/hidro%2010.jpeg", alt: "Hidrometeorología — hidro 10", w: 1176, h: 1280 },
+    ],
+    "Paisajes": [
+      { src: "img/galeria/Paisajes/paisajes%201.jpg", alt: "Paisajes — paisajes 1", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%202.jpeg", alt: "Paisajes — paisajes 2", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%203.jpeg", alt: "Paisajes — paisajes 3", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%204.jpeg", alt: "Paisajes — paisajes 4", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%205.jpeg", alt: "Paisajes — paisajes 5", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%206.jpeg", alt: "Paisajes — paisajes 6", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%207.jpeg", alt: "Paisajes — paisajes 7", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%208.jpeg", alt: "Paisajes — paisajes 8", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%209.jpeg", alt: "Paisajes — paisajes 9", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2010.jpeg", alt: "Paisajes — paisajes 10", w: 1200, h: 554 },
+      { src: "img/galeria/Paisajes/paisajes%2011.jpeg", alt: "Paisajes — paisajes 11", w: 960, h: 1280 },
+      { src: "img/galeria/Paisajes/paisajes%2012.jpeg", alt: "Paisajes — paisajes 12", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2013.jpeg", alt: "Paisajes — paisajes 13", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2014.jpeg", alt: "Paisajes — paisajes 14", w: 960, h: 1280 },
+      { src: "img/galeria/Paisajes/paisajes%2015.jpeg", alt: "Paisajes — paisajes 15", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2016.jpeg", alt: "Paisajes — paisajes 16", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2017.jpeg", alt: "Paisajes — paisajes 17", w: 1200, h: 900 },
+      { src: "img/galeria/Paisajes/paisajes%2018.jpeg", alt: "Paisajes — paisajes 18", w: 1200, h: 900 },
+    ],
+    "Produccion Agropecuaria": [
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria1.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria1", w: 960, h: 1280 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria2.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria2", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria3.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria3", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria4.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria4", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria5.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria5", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria6.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria6", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria7.jpeg", alt: "Produccion Agropecuaria — produccion agropecuaria7", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria8.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria8", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria9.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria9", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria10.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria10", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria11.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria11", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria12.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria12", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria13.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria13", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria14.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria14", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria15.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria15", w: 1200, h: 1600 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria16.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria16", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria17.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria17", w: 1200, h: 900 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria18.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria18", w: 1200, h: 1600 },
+      { src: "img/galeria/Produccion%20Agropecuaria/produccion%20agropecuaria19.jpg", alt: "Produccion Agropecuaria — produccion agropecuaria19", w: 1200, h: 1600 },
+    ],
+  };
+  function escapeAttr(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   var modal = $("#album-modal");
   var modalTitle = $("#modal-title");
   var modalGrid = $("#modal-grid");
@@ -284,10 +368,15 @@
     lastFocus = document.activeElement;
     if (modalTitle) modalTitle.textContent = album;
     if (modalGrid) {
+      var items = GALLERY[album] || [];
       var tiles = "";
-      for (var i = 1; i <= 9; i += 1) {
-        tiles += '<span class="media" style="min-height:110px" aria-hidden="true"><span>Fotografía ' + i + "</span></span>";
-      }
+      items.forEach(function (item) {
+        tiles +=
+          '<figure class="gallery-tile"><img src="' + item.src +
+          '" alt="' + escapeAttr(item.alt) +
+          '" width="' + item.w + '" height="' + item.h +
+          '" loading="lazy" decoding="async"></figure>';
+      });
       modalGrid.innerHTML = tiles;
     }
     modal.hidden = false;
