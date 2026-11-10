@@ -18,6 +18,73 @@
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function icons() { if (window.lucide && typeof window.lucide.createIcons === "function") window.lucide.createIcons(); }
 
+  /* ---------- videos institucionales ---------- */
+  function getYouTubeId(url) {
+    try {
+      var parsed = new URL(url, window.location.href);
+      var host = parsed.hostname.replace(/^www\./, "");
+      if (host === "youtu.be") return parsed.pathname.split("/")[1] || null;
+      if (host === "youtube.com" || host === "m.youtube.com") {
+        if (parsed.searchParams.get("v")) return parsed.searchParams.get("v");
+        var match = parsed.pathname.match(/\/(?:embed|shorts)\/([^/?#]+)/);
+        if (match) return match[1];
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function loadVideoMetadata(url, card) {
+    if (!window.fetch) return;
+    var titleEl = card.querySelector(".video-title");
+    var metaEl = card.querySelector(".video-meta");
+    // Endpoint oEmbed compatible con CORS; devuelve los metadatos de YouTube.
+    var endpoint = "https://noembed.com/embed?url=" + encodeURIComponent(url);
+    fetch(endpoint)
+      .then(function (response) {
+        if (!response.ok) throw new Error("metadata");
+        return response.json();
+      })
+      .then(function (data) {
+        if (data && data.title) titleEl.textContent = data.title;
+        if (data && data.author_name) metaEl.textContent = data.author_name;
+      })
+      .catch(function () {
+        // Se mantienen los textos discretos de respaldo.
+      });
+  }
+
+  function renderVideos() {
+    var grid = $("#video-grid");
+    if (!grid) return;
+    var urls = (window.SITE_VIDEOS || []).filter(function (url) {
+      return typeof url === "string" && url.trim();
+    });
+    grid.innerHTML = "";
+    urls.forEach(function (url) {
+      var id = getYouTubeId(url);
+      if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+      var card = document.createElement("a");
+      card.className = "video-card";
+      card.href = url;
+      card.target = "_blank";
+      card.rel = "noopener";
+      card.innerHTML =
+        '<div class="video-thumb media">' +
+          '<img class="video-thumb-img" src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" />' +
+          '<span class="play-btn"><i data-lucide="play"></i></span>' +
+        '</div>' +
+        '<div class="video-body">' +
+          '<h3 class="video-title">Video institucional</h3>' +
+          '<p class="video-meta">YouTube</p>' +
+        '</div>';
+      grid.appendChild(card);
+      loadVideoMetadata(url, card);
+    });
+    icons();
+  }
+
   /* ---------- toast ---------- */
   var toastEl = $("#toast");
   var toastTimer = null;
@@ -37,12 +104,14 @@
     var parts = raw.split("/");
     var page = parts[0] || "inicio";
     if (PAGES.indexOf(page) === -1) page = "inicio";
-    return { page: page, section: parts[1] || null };
+    var section = parts[1] || null;
+    if (page === "conocenos" && !section) section = "historia";
+    return { page: page, section: section };
   }
 
   function setActiveNav(page) {
     $$(".nav-link[href]").forEach(function (link) {
-      var target = (link.getAttribute("href") || "").replace("#", "");
+      var target = (link.getAttribute("href") || "").replace("#", "").split("/")[0];
       var active = target === page;
       link.classList.toggle("is-active", active);
       if (active) link.setAttribute("aria-current", "page");
@@ -50,10 +119,8 @@
     });
     var dropdownBtn = $(".dropdown-toggle");
     if (dropdownBtn) {
-      var isConocenos = page === "conocenos";
-      dropdownBtn.classList.toggle("is-active", isConocenos);
-      if (isConocenos) dropdownBtn.setAttribute("aria-current", "page");
-      else dropdownBtn.removeAttribute("aria-current");
+      dropdownBtn.classList.toggle("is-active", page === "conocenos");
+      dropdownBtn.removeAttribute("aria-current");
     }
   }
 
@@ -71,7 +138,9 @@
 
   function navigate(page, section) {
     if (PAGES.indexOf(page) === -1) page = "inicio";
+    if (page === "conocenos" && !section) section = "historia";
     var hash = "#" + page;
+    if (page === "conocenos" && section) hash += "/" + section;
     if (window.location.hash !== hash) {
       window.history.pushState(null, "", hash);
     }
@@ -192,12 +261,13 @@
     link.addEventListener("click", function (event) {
       var href = link.getAttribute("href") || "";
       if (href.charAt(0) !== "#") return;
-      var page = href.replace("#", "");
+      var page = href.replace("#", "").split("/")[0];
       if (PAGES.indexOf(page) === -1) return;
       event.preventDefault();
+      openDropdown(false);
       if (currentPage === page) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        history.replaceState(null, "", "#" + page);
+        history.replaceState(null, "", href);
       } else {
         navigate(page);
       }
@@ -250,6 +320,7 @@
     });
   });
 
+<<<<<<< HEAD
   /* ---------- agenda: carrusel, calendario y modal ---------- */
   var agendaInitialized = false;
   var agendaEvents = [];
@@ -403,6 +474,35 @@
     var firstDay = monthDate.getDay();
     var offset = (firstDay + 6) % 7;
     var start = new Date(agendaViewYear, agendaViewMonth, 1 - offset);
+=======
+  /* ---------- document accordion (Marco regulatorio) ---------- */
+  $$(".doc-toggle").forEach(function (btn) {
+    var panel = document.getElementById(btn.getAttribute("aria-controls"));
+    if (!panel) return;
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.classList.toggle("is-open", open);
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
+    });
+  });
+
+  /* ---------- calendar ---------- */
+  var calGrid = $("#cal-grid");
+  if (calGrid) {
+    var weeks = [
+      [26, 27, 28, 29, 30, 31, 1],
+      [2, 3, 4, 5, 6, 7, 8],
+      [9, 10, 11, 12, 13, 14, 15],
+      [16, 17, 18, 19, 20, 21, 22],
+      [23, 24, 25, 26, 27, 28, 29],
+      [30, 1, 2, 3, 4, 5, 6]
+    ];
+    var TODAY = 9;
+    var EVENTS = [13, 14, 18, 25];
+    var outOfMonth = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6]];
+    var isOut = function (w, d) { return outOfMonth.some(function (p) { return p[0] === w && p[1] === d; }); };
+>>>>>>> feature/edit-conocenos
     var html = "";
 
     for (var i = 0; i < 42; i += 1) {
@@ -853,10 +953,14 @@
   });
 
   /* ---------- init ---------- */
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", onRoute);
-  } else {
+  function init() {
+    renderVideos();
     onRoute();
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
   }
   icons();
 })();
