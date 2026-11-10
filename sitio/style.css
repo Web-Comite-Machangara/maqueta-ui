@@ -204,20 +204,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .hero-media {
   position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(120% 90% at 20% 10%, rgba(236, 255, 102, .18), transparent 55%),
-    linear-gradient(135deg, #35507e 0%, #273576 45%, #1b2547 100%);
+  background-color: #273576;
+  background-image: url("img/portada-inicio.webp");
+  background-size: cover;
+  background-position: center 55%;
+  background-repeat: no-repeat;
 }
-.hero-media::before {
-  content: ""; position: absolute; inset: 0;
-  background:
-    radial-gradient(60% 70% at 78% 82%, rgba(33, 141, 202, .55), transparent 60%),
-    radial-gradient(50% 50% at 30% 100%, rgba(96, 178, 49, .35), transparent 60%);
-}
-.hero-media span { position: absolute; right: 18px; top: 16px; font-size: 11px; color: rgba(255, 255, 255, .55); max-width: 40ch; text-align: right; }
+.hero-media span { display: none; }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(39, 53, 118, .18) 0%, rgba(39, 53, 118, .55) 62%, rgba(39, 53, 118, .72) 100%);
+  background:
+    linear-gradient(90deg, rgba(15, 22, 40, .58) 0%, rgba(15, 22, 40, .32) 44%, rgba(15, 22, 40, 0) 76%),
+    linear-gradient(180deg, rgba(15, 22, 40, .10) 0%, rgba(15, 22, 40, .42) 55%, rgba(15, 22, 40, .80) 100%);
 }
 .hero-content { position: relative; z-index: 2; padding: 44px 48px; display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
 .hero-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 700; color: rgba(255, 255, 255, .95); }
@@ -335,6 +333,21 @@ ul { margin: 0; padding: 0; list-style: none; }
 .media-md { min-height: 160px; }
 .media-sm { width: 150px; min-height: 110px; flex: none; border-radius: 10px; }
 
+/* Foto de "Conservación de la cuenca" (Inicio) */
+#inicio .split .media-tall {
+  background: url("img/paramo-andino.webp") center 60% / cover no-repeat;
+}
+#inicio .split .media-tall span { display: none; }
+
+/* Fotos de "Noticias y redes sociales" (Inicio) */
+#inicio .news-grid .news-card:nth-of-type(1) .media-sm {
+  background: url("img/monitoreo-agua.webp") center / cover no-repeat;
+}
+#inicio .news-grid .news-card:nth-of-type(2) .media-sm {
+  background: url("img/equipo-de-conservacion.webp") center / cover no-repeat;
+}
+#inicio .news-grid .media-sm span { display: none; }
+
 .feature-list { display: flex; flex-direction: column; gap: 12px; }
 .feature-list li { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; }
 .feature-icon {
@@ -371,6 +384,38 @@ ul { margin: 0; padding: 0; list-style: none; }
 .news-date { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted-fg); }
 .news-date .lucide { font-size: 13px; }
 
+/* Card de noticia que enlaza a la fuente externa */
+a.news-card {
+  text-decoration: none;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+a.news-card .news-title { transition: color .16s ease; }
+a.news-card:hover, a.news-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: var(--shadow);
+}
+a.news-card:hover .news-title,
+a.news-card:focus-visible .news-title { color: var(--blue); }
+
+/* Fotos de las noticias del Comité (página Noticias) */
+#noticias .grid-2x2 > .news-card:nth-of-type(1) .media {
+  background: url("img/noticia-articulacion.webp") center 68% / cover no-repeat;
+}
+#noticias .grid-2x2 > .news-card:nth-of-type(2) .media {
+  background: url("img/noticia-implementos.webp") center 28% / cover no-repeat;
+}
+#noticias .grid-2x2 > .news-card:nth-of-type(3) .media {
+  background: url("img/noticia-convenio.webp") center / cover no-repeat;
+}
+#noticias .grid-2x2 > .news-card:nth-of-type(4) .media {
+  background: url("img/noticia-sesion-comite.webp") center 40% / cover no-repeat;
+}
+#noticias .grid-2x2 > .news-card:nth-of-type(5) .media {
+  background: url("img/noticia-incendios.webp") center 45% / cover no-repeat;
+}
+#noticias .grid-2x2 .media span { display: none; }
+
 .embed-card { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .embed-head { display: flex; align-items: center; gap: 10px; }
 .avatar { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: none; border-radius: 50%; font-size: 14px; }
@@ -378,11 +423,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 .avatar-dark { background: var(--olive-dark); color: #fff; }
 .embed-name { font-size: 13px; font-weight: 600; }
 .embed-meta { font-size: 11px; color: var(--olive); }
-.embed-body { font-size: 13.5px; line-height: 1.5; }
+.embed-body {
+  font-size: 13.5px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .embed-divider { height: 1px; background: var(--border); }
 .embed-foot { display: flex; gap: 18px; font-size: 12.5px; color: var(--muted-fg); }
 .embed-foot span { display: inline-flex; align-items: center; gap: 6px; }
 .embed-foot .lucide { font-size: 13px; }
+.embed-foot .link-arrow { font-size: 12.5px; }
+.embed-foot .link-arrow .lucide { font-size: 13px; }
 .social-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
 .social-col { display: flex; flex-direction: column; gap: 16px; }
 .social-side .side-card { gap: 10px; }
@@ -391,6 +442,49 @@ ul { margin: 0; padding: 0; list-style: none; }
 .social-link .lucide { font-size: 16px; color: var(--blue); }
 .social-link span { display: flex; flex-direction: column; font-size: 13.5px; font-weight: 600; line-height: 1.3; }
 .social-link small { font-size: 12px; font-weight: 400; color: var(--muted-fg); }
+
+/* ---------- Noticia destacada ---------- */
+.feature-news {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.feature-news-media {
+  aspect-ratio: 800 / 369;
+  background: url("img/asamblea-comite-2026.webp") center / cover no-repeat;
+}
+.feature-news-media span { display: none; }
+.feature-news .chip-glass { background: var(--blue-tint); color: var(--blue); }
+.feature-news-content { display: flex; flex-direction: column; gap: 10px; padding: 24px; }
+.feature-news-title {
+  font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 700; letter-spacing: -0.4px; line-height: 1.25;
+}
+.feature-news-date { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted-fg); }
+.feature-news-date .lucide { font-size: 13px; }
+
+/* ---------- En los medios ---------- */
+a.media-card {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 20px; text-decoration: none;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+a.media-card:hover, a.media-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: var(--shadow);
+}
+.media-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: none; border-radius: 50%;
+  background: var(--green-tint); color: var(--green); font-size: 17px;
+}
+.media-card > div { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.media-name { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.media-sub { font-size: 13.5px; line-height: 1.45; color: var(--muted-fg); }
+.media-arrow { flex: none; font-size: 16px; color: var(--olive); }
+a.media-card:hover .link-arrow .lucide,
+a.media-card:focus-visible .link-arrow .lucide { transform: translateX(3px); }
 
 /* ---------- Quotes / people ---------- */
 .quote-card { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
