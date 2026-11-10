@@ -272,6 +272,24 @@ ul { margin: 0; padding: 0; list-style: none; }
 .card-icon-coral { background: #FDEAE4; color: var(--coral); }
 .stat-value { font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; color: var(--blue); }
 .stat-label { font-size: 13px; line-height: 1.4; color: var(--muted-fg); }
+.indicator-card { border-color: rgba(39, 53, 118, .08); }
+.indicator-card-blue { background: var(--blue-tint); }
+.indicator-card-green { background: var(--green-tint); }
+.indicator-card-sand { background: var(--sand); }
+.indicator-card .card-icon { background: rgba(255, 255, 255, .72); }
+.indicator-card .card-title { color: var(--navy); }
+@media (min-width: 641px) {
+  .indicator-card .card-title { min-height: 3.75em; }
+}
+.indicator-highlight {
+  display: flex; align-items: center;
+  width: 100%; min-height: 44px;
+  padding: 6px 10px; border-radius: 10px;
+  background: rgba(255, 255, 255, .72);
+  font-family: var(--font-body);
+  font-size: 12px; font-weight: 600; line-height: 1.35;
+  color: var(--navy);
+}
 .info-card { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
 .card-title { font-size: 18px; font-weight: 700; line-height: 1.25; }
 .card-text { font-size: 14.5px; line-height: 1.55; color: var(--muted-fg); }
