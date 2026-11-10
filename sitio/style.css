@@ -392,6 +392,27 @@ ul { margin: 0; padding: 0; list-style: none; }
 .person-role { font-size: 12.5px; color: var(--muted-fg); }
 .person-inst { font-size: 12.5px; color: var(--olive); }
 .person-card { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.director-card {
+  padding: 0; overflow: hidden;
+  align-items: stretch; justify-content: flex-start;
+  gap: 0; text-align: left;
+}
+.director-photo {
+  width: 100%; aspect-ratio: 1 / 1;
+  min-height: 0; border-radius: 0;
+  border-bottom: 1px solid var(--border);
+}
+.director-photo span { font-size: 12px; letter-spacing: .3px; }
+.director-body {
+  padding: 18px 20px 22px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.director-body .person-name {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 700;
+  line-height: 1.2; color: var(--navy);
+}
+.director-body .person-role { font-size: 13px; }
 
 /* ---------- Actions / badges ---------- */
 .action-card { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
@@ -421,6 +442,42 @@ ul { margin: 0; padding: 0; list-style: none; }
   width: 40px; height: 40px; border-radius: 50%;
   background: var(--green-tint); color: var(--green); font-size: 16px;
 }
+.member-logo-card {
+  position: relative;
+  padding: 0; gap: 0; min-height: 0;
+  align-items: stretch; justify-content: flex-start;
+  text-align: left; overflow: hidden;
+  font-size: inherit; font-weight: inherit; line-height: inherit;
+}
+.member-logo {
+  flex: 1;
+  min-height: 150px;
+  border-radius: 0;
+}
+.member-logo span { font-size: 12px; letter-spacing: .3px; }
+.member-name {
+  padding: 12px 14px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  font-size: 12.5px; font-weight: 600; line-height: 1.35;
+  color: var(--navy); text-align: center;
+}
+.member-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  padding: 18px;
+  background: rgba(39, 53, 118, .92);
+  color: #fff;
+  opacity: 0; visibility: hidden;
+  transition: opacity .18s ease, visibility .18s ease;
+  border-radius: inherit;
+  text-align: left;
+}
+.member-logo-card:hover .member-overlay,
+.member-logo-card:focus .member-overlay,
+.member-logo-card:focus-within .member-overlay { opacity: 1; visibility: visible; }
+.member-overlay-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; line-height: 1.2; }
+.member-overlay-text { font-size: 12px; line-height: 1.45; color: rgba(255, 255, 255, .9); }
 .file-list { overflow: hidden; }
 .file-row { display: flex; align-items: center; gap: 14px; padding: 18px; }
 .file-row + .file-row { border-top: 1px solid var(--border); }
