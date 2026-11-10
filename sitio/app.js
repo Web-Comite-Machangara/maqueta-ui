@@ -320,7 +320,6 @@
     });
   });
 
-<<<<<<< HEAD
   /* ---------- agenda: carrusel, calendario y modal ---------- */
   var agendaInitialized = false;
   var agendaEvents = [];
@@ -474,35 +473,6 @@
     var firstDay = monthDate.getDay();
     var offset = (firstDay + 6) % 7;
     var start = new Date(agendaViewYear, agendaViewMonth, 1 - offset);
-=======
-  /* ---------- document accordion (Marco regulatorio) ---------- */
-  $$(".doc-toggle").forEach(function (btn) {
-    var panel = document.getElementById(btn.getAttribute("aria-controls"));
-    if (!panel) return;
-    btn.addEventListener("click", function () {
-      var open = btn.getAttribute("aria-expanded") !== "true";
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      panel.classList.toggle("is-open", open);
-      panel.setAttribute("aria-hidden", open ? "false" : "true");
-    });
-  });
-
-  /* ---------- calendar ---------- */
-  var calGrid = $("#cal-grid");
-  if (calGrid) {
-    var weeks = [
-      [26, 27, 28, 29, 30, 31, 1],
-      [2, 3, 4, 5, 6, 7, 8],
-      [9, 10, 11, 12, 13, 14, 15],
-      [16, 17, 18, 19, 20, 21, 22],
-      [23, 24, 25, 26, 27, 28, 29],
-      [30, 1, 2, 3, 4, 5, 6]
-    ];
-    var TODAY = 9;
-    var EVENTS = [13, 14, 18, 25];
-    var outOfMonth = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6]];
-    var isOut = function (w, d) { return outOfMonth.some(function (p) { return p[0] === w && p[1] === d; }); };
->>>>>>> feature/edit-conocenos
     var html = "";
 
     for (var i = 0; i < 42; i += 1) {
@@ -720,6 +690,18 @@
     renderAgendaCalendar();
     renderAgendaCarousel(upcomingAgendaEvents(), "upcoming");
   }
+
+  /* ---------- document accordion (Marco regulatorio) ---------- */
+  $$(".doc-toggle").forEach(function (btn) {
+    var panel = document.getElementById(btn.getAttribute("aria-controls"));
+    if (!panel) return;
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.classList.toggle("is-open", open);
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
+    });
+  });
 
   /* ---------- gallery album modal ---------- */
   var GALLERY = {

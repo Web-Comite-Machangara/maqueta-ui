@@ -5,6 +5,6 @@
    ========================================================= */
 window.SITE_VIDEOS = [
   "https://www.youtube.com/watch?v=lPPjI3AzFTo",
-  "https://www.youtube.com/watch?v=lPPjI3AzFTo",
-  "https://www.youtube.com/watch?v=cHquWurKXq0"
+  "https://www.youtube.com/watch?v=cHquWurKXq0",
+  "https://www.youtube.com/watch?v=OMpKAt1xQ70"
 ];
