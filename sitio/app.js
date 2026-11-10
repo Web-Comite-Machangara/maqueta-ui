@@ -245,6 +245,18 @@
     });
   });
 
+  /* ---------- document accordion (Marco regulatorio) ---------- */
+  $$(".doc-toggle").forEach(function (btn) {
+    var panel = document.getElementById(btn.getAttribute("aria-controls"));
+    if (!panel) return;
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.classList.toggle("is-open", open);
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
+    });
+  });
+
   /* ---------- calendar ---------- */
   var calGrid = $("#cal-grid");
   if (calGrid) {

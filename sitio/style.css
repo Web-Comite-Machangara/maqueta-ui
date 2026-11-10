@@ -481,7 +481,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   position: absolute; inset: 0;
   display: flex; flex-direction: column; justify-content: center; gap: 6px;
   padding: 18px;
-  background: rgba(39, 53, 118, .92);
+  background: var(--navy);
   color: #fff;
   opacity: 0; visibility: hidden;
   transition: opacity .18s ease, visibility .18s ease;
@@ -501,6 +501,21 @@ ul { margin: 0; padding: 0; list-style: none; }
 .file-name { font-size: 14.5px; font-weight: 600; line-height: 1.35; }
 .file-meta { font-size: 12.5px; color: var(--muted-fg); }
 .file-row .icon-btn { width: 36px; height: 36px; font-size: 15px; flex: none; }
+.doc-item + .doc-item { border-top: 1px solid var(--border); }
+.doc-toggle[aria-expanded="true"] { background: var(--green-tint); color: var(--blue); }
+.doc-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.doc-panel {
+  display: grid; grid-template-rows: 0fr;
+  opacity: 0; visibility: hidden;
+  background: var(--muted);
+  transition: grid-template-rows .25s ease, opacity .18s ease, visibility .25s ease;
+}
+.doc-panel.is-open { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.doc-panel-inner { overflow: hidden; }
+.doc-panel-content { padding: 16px 18px 18px; border-top: 1px solid var(--border); }
+.doc-panel-title { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--navy); }
+.doc-panel-desc { margin-top: 6px; font-size: 13.5px; line-height: 1.5; color: var(--muted-fg); }
+.doc-open-btn { margin-top: 12px; min-height: 40px; padding: 0 16px; font-size: 13.5px; }
 
 /* ---------- Documents ---------- */
 .toolbar { display: flex; flex-direction: column; gap: 12px; }
