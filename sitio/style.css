@@ -660,7 +660,6 @@ a.media-card:focus-visible .link-arrow .lucide { transform: translateX(3px); }
 .album-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--muted-fg); }
 .video-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .video-card { overflow: hidden; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
-<<<<<<< HEAD
 a.video-card {
   display: block; text-decoration: none;
   transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
@@ -676,10 +675,7 @@ a.video-card:hover .video-title, a.video-card:focus-visible .video-title { color
 }
 a.video-card .video-thumb { background: var(--muted); }
 .video-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-=======
-.video-thumb { position: relative; min-height: 180px; border-radius: 0; display: flex; align-items: center; justify-content: center; }
 .video-thumb-img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
->>>>>>> feature/edit-conocenos
 .play-btn {
   position: relative; z-index: 1;
   display: inline-flex; align-items: center; justify-content: center;
