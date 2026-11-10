@@ -37,12 +37,14 @@
     var parts = raw.split("/");
     var page = parts[0] || "inicio";
     if (PAGES.indexOf(page) === -1) page = "inicio";
-    return { page: page, section: parts[1] || null };
+    var section = parts[1] || null;
+    if (page === "conocenos" && !section) section = "historia";
+    return { page: page, section: section };
   }
 
   function setActiveNav(page) {
     $$(".nav-link[href]").forEach(function (link) {
-      var target = (link.getAttribute("href") || "").replace("#", "");
+      var target = (link.getAttribute("href") || "").replace("#", "").split("/")[0];
       var active = target === page;
       link.classList.toggle("is-active", active);
       if (active) link.setAttribute("aria-current", "page");
@@ -50,10 +52,8 @@
     });
     var dropdownBtn = $(".dropdown-toggle");
     if (dropdownBtn) {
-      var isConocenos = page === "conocenos";
-      dropdownBtn.classList.toggle("is-active", isConocenos);
-      if (isConocenos) dropdownBtn.setAttribute("aria-current", "page");
-      else dropdownBtn.removeAttribute("aria-current");
+      dropdownBtn.classList.toggle("is-active", page === "conocenos");
+      dropdownBtn.removeAttribute("aria-current");
     }
   }
 
@@ -71,7 +71,9 @@
 
   function navigate(page, section) {
     if (PAGES.indexOf(page) === -1) page = "inicio";
+    if (page === "conocenos" && !section) section = "historia";
     var hash = "#" + page;
+    if (page === "conocenos" && section) hash += "/" + section;
     if (window.location.hash !== hash) {
       window.history.pushState(null, "", hash);
     }
@@ -184,12 +186,13 @@
     link.addEventListener("click", function (event) {
       var href = link.getAttribute("href") || "";
       if (href.charAt(0) !== "#") return;
-      var page = href.replace("#", "");
+      var page = href.replace("#", "").split("/")[0];
       if (PAGES.indexOf(page) === -1) return;
       event.preventDefault();
+      openDropdown(false);
       if (currentPage === page) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        history.replaceState(null, "", "#" + page);
+        history.replaceState(null, "", href);
       } else {
         navigate(page);
       }

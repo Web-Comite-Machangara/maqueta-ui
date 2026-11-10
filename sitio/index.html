@@ -42,9 +42,12 @@
 
       <nav class="nav" id="nav-principal" aria-label="Navegación principal">
         <div class="nav-item has-dropdown">
-          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="dropdown-conocenos" aria-haspopup="true">
-            Conócenos <i data-lucide="chevron-down" class="chev"></i>
-          </button>
+          <div class="nav-item-head">
+            <a class="nav-link" href="#conocenos/historia">Conócenos</a>
+            <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="dropdown-conocenos" aria-haspopup="true" aria-label="Abrir submenú de Conócenos">
+              <i data-lucide="chevron-down" class="chev"></i>
+            </button>
+          </div>
           <div class="dropdown" id="dropdown-conocenos">
             <a href="#conocenos" data-section="historia">Historia</a>
             <a href="#conocenos" data-section="mision-vision">Misión y visión</a>
@@ -119,7 +122,7 @@
               <h1 class="hero-title" id="inicio-title">Cuidamos el río, los páramos y las comunidades de la subcuenca del Machángara</h1>
               <p class="hero-text">Instituciones públicas, academia y comunidades trabajando juntas por la conservación de la fuente de agua de Cuenca.</p>
               <div class="hero-actions">
-                <a class="btn btn-light" href="#conocenos">Conócenos</a>
+                <a class="btn btn-light" href="#conocenos/historia">Conócenos</a>
                 <a class="btn btn-ghost" href="#agenda">Ver agenda</a>
               </div>
             </div>
@@ -273,19 +276,15 @@
         </section>
 
         <!-- ================= CONÓCENOS ================= -->
-        <section class="page" id="conocenos" data-page="conocenos" aria-labelledby="conocenos-title" hidden>
-          <header class="page-header">
-            <p class="breadcrumb">Inicio / Conócenos</p>
-            <h1 class="page-title" id="conocenos-title">Conócenos</h1>
-            <p class="lead">Historia, organización, objetivos y actividades del Comité de Conservación de la Cuenca del Río Machángara.</p>
-          </header>
-
+        <section class="page" id="conocenos" data-page="conocenos" aria-labelledby="historia-title" hidden>
           <section class="section" id="historia">
-            <h2 class="section-title">Historia</h2>
+            <h1 class="section-title" id="historia-title">Historia</h1>
             <div class="split">
               <div class="split-body">
-                <p class="section-text">El Comité nace de la articulación entre instituciones públicas y privadas, la academia y las comunidades de la subcuenca, con el propósito de coordinar acciones para su conservación y manejo sostenible.</p>
-                <p class="section-text muted">Desde entonces, impulsa una gestión participativa del territorio que abastece de agua a Cuenca, integrando el trabajo de guardaparques, técnicos y organizaciones locales.</p>
+                <p class="section-text">El 28 de julio de 1998 se constituyó el Consejo de Cuenca del río Machángara, con el propósito de impulsar la gestión y conservación de los recursos hídricos de la cuenca.</p>
+                <p class="section-text">Posteriormente, la Constitución de la República del Ecuador de 2008 y la Ley Orgánica de Recursos Hídricos, Usos y Aprovechamiento del Agua establecieron el marco para la gestión integrada e integral de los recursos hídricos, con un enfoque ecosistémico y basado en cuencas hidrográficas.</p>
+                <p class="section-text">En este contexto, se identificó que la demarcación de la cuenca del Santiago, que comprende los ríos Mayo, Zamora y Santiago, no contaba con un amparo legal que permitiera el reconocimiento del Consejo de Cuenca del río Machángara.</p>
+                <p class="section-text">Por ello, mediante resolución de la Autoridad Única del Agua, en sesión de Directorio del 5 de abril de 2017, se acordó que el Consejo de Cuenca del Río Machángara pasara a denominarse <strong>Comité de Conservación de la Cuenca del Río Machángara</strong>, nombre que responde a su nueva denominación institucional.</p>
               </div>
               <div class="media media-tall" aria-hidden="true"><span>Fotografía: represa andina — pendiente de material oficial</span></div>
             </div>
@@ -294,48 +293,83 @@
           <section class="section" id="mision-vision">
             <h2 class="section-title">Misión y visión</h2>
             <div class="cards-2">
-              <article class="info-card"><span class="card-icon"><i data-lucide="target"></i></span><h3 class="card-title">Misión</h3><p class="card-text">Coordinar la conservación y el manejo sostenible de la cuenca del río Machángara, garantizando la calidad y disponibilidad del agua para las presentes y futuras generaciones.</p></article>
-              <article class="info-card"><span class="card-icon"><i data-lucide="eye"></i></span><h3 class="card-title">Visión</h3><p class="card-text">Una cuenca protegida, con ecosistemas sanos y comunidades comprometidas con la gestión responsable del agua y el territorio.</p></article>
+              <article class="info-card"><span class="card-icon"><i data-lucide="target"></i></span><h3 class="card-title">Misión</h3><p class="card-text">Promover la conservación y gestión integral de la cuenca del río Machángara, mediante un enfoque ecosistémico que contribuya a la protección de los recursos hídricos y al fortalecimiento de la coordinación entre los diferentes actores y niveles de gobierno vinculados con el territorio.</p></article>
+              <article class="info-card"><span class="card-icon"><i data-lucide="eye"></i></span><h3 class="card-title">Visión</h3><p class="card-text">Consolidarse como un referente en la conservación y gestión integral de la cuenca del río Machángara, impulsando la protección sostenible de sus recursos hídricos y el compromiso conjunto de los actores involucrados en beneficio del territorio y las futuras generaciones.</p></article>
             </div>
           </section>
 
           <section class="section" id="que-hacemos">
             <h2 class="section-title">Qué hacemos</h2>
-            <p class="section-sub">Funciones generales del Comité:</p>
-            <ul class="feature-list feature-list-wide">
-              <li><span class="feature-icon"><i data-lucide="leaf"></i></span> Coordinar acciones de conservación y restauración del territorio</li>
-              <li><span class="feature-icon"><i data-lucide="activity"></i></span> Impulsar el monitoreo ambiental participativo</li>
-              <li><span class="feature-icon"><i data-lucide="users"></i></span> Articular a las instituciones y comunidades de la subcuenca</li>
-            </ul>
+            <p class="section-text">Trabajamos por la conservación de la cuenca del río Machángara mediante acciones de protección ambiental, monitoreo, educación y participación comunitaria.</p>
+            <div class="cards-3 what-we-do-grid">
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="trees"></i></span>
+                <h3 class="card-title">Conservación del territorio</h3>
+                <p class="card-text">Protección de los ecosistemas, páramos y áreas de recarga hídrica de la cuenca.</p>
+              </article>
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="shield-check"></i></span>
+                <h3 class="card-title">Control y vigilancia</h3>
+                <p class="card-text">Trabajo con guardaparques, guardabosques y brigadas para prevenir y atender incendios forestales y agresiones ambientales.</p>
+              </article>
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="droplets"></i></span>
+                <h3 class="card-title">Monitoreo ambiental</h3>
+                <p class="card-text">Seguimiento de la calidad del agua y de las variables hidrometeorológicas de la subcuenca.</p>
+              </article>
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="sprout"></i></span>
+                <h3 class="card-title">Producción sostenible</h3>
+                <p class="card-text">Impulso a la agroecología, la ganadería sostenible y las buenas prácticas productivas.</p>
+              </article>
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="book-open"></i></span>
+                <h3 class="card-title">Educación ambiental</h3>
+                <p class="card-text">Actividades educativas, talleres y campañas para fomentar el cuidado del agua y la naturaleza.</p>
+              </article>
+              <article class="info-card what-we-do-card">
+                <span class="card-icon"><i data-lucide="users"></i></span>
+                <h3 class="card-title">Gestión participativa</h3>
+                <p class="card-text">Articulación entre instituciones, comunidades y actores locales para la gestión de la cuenca.</p>
+              </article>
+            </div>
           </section>
 
           <section class="section" id="acciones">
             <h2 class="section-title">Acciones</h2>
-            <p class="section-text muted">Actividades organizadas según las líneas estratégicas del Comité. La información detallada está disponible en el repositorio documental.</p>
+            <p class="section-text">Conoce las principales actividades que desarrolla el Comité a través de sus líneas estratégicas de trabajo, orientadas a la conservación de la subcuenca del río Machángara.</p>
             <div class="cards-2">
-              <article class="action-card">
-                <div class="action-head"><span class="card-icon"><i data-lucide="shield"></i></span><h3 class="card-title">Guardaparques</h3></div>
-                <p class="card-text">Patrullaje y protección de páramos, fuentes de agua y áreas de conservación.</p>
-                <div class="action-stats"><div class="mini-stat"><b>38</b><span>guardaparques activos</span></div><div class="mini-stat"><b>12</b><span>rutas de patrullaje</span></div></div>
+              <article class="action-card action-line-card">
+                <div class="action-head">
+                  <span class="card-icon"><i data-lucide="shield-check"></i></span>
+                  <h3 class="card-title">Guardaparques</h3>
+                </div>
+                <p class="card-text">Actividades de vigilancia, recorridos y protección de las áreas de conservación, los páramos y las fuentes de agua de la subcuenca.</p>
                 <a class="link-arrow" href="#documentos">Ver en el repositorio documental <i data-lucide="arrow-right"></i></a>
               </article>
-              <article class="action-card">
-                <div class="action-head"><span class="card-icon"><i data-lucide="activity"></i></span><h3 class="card-title">Monitoreo ambiental</h3></div>
-                <p class="card-text">Medición periódica de calidad y cantidad del agua en la subcuenca.</p>
-                <div class="action-stats"><div class="mini-stat"><b>14</b><span>estaciones</span></div><div class="mini-stat"><b>3</b><span>campañas al año</span></div></div>
+              <article class="action-card action-line-card">
+                <div class="action-head">
+                  <span class="card-icon"><i data-lucide="droplets"></i></span>
+                  <h3 class="card-title">Monitoreo ambiental</h3>
+                </div>
+                <p class="card-text">Seguimiento de las condiciones ambientales de la subcuenca mediante el monitoreo de la calidad del agua y las variables hidrometeorológicas.</p>
                 <a class="link-arrow" href="#documentos">Ver en el repositorio documental <i data-lucide="arrow-right"></i></a>
               </article>
-              <article class="action-card">
-                <div class="action-head"><span class="card-icon"><i data-lucide="sprout"></i></span><h3 class="card-title">Proyectos productivos para la comunidad</h3></div>
-                <p class="card-text">Iniciativas agropecuarias sostenibles que reducen la presión sobre el agua y el suelo.</p>
-                <div class="action-stats"><div class="mini-stat"><b>9</b><span>comunidades</span></div><div class="mini-stat"><b>6</b><span>proyectos activos</span></div></div>
+              <article class="action-card action-line-card">
+                <div class="action-head">
+                  <span class="card-icon"><i data-lucide="sprout"></i></span>
+                  <h3 class="card-title">Proyectos productivos para la comunidad</h3>
+                </div>
+                <p class="card-text">Iniciativas orientadas a promover prácticas productivas sostenibles y fortalecer las actividades agropecuarias de las comunidades.</p>
                 <a class="link-arrow" href="#documentos">Ver en el repositorio documental <i data-lucide="arrow-right"></i></a>
               </article>
-              <article class="action-card action-card-alert">
-                <div class="action-head"><span class="card-icon card-icon-coral"><i data-lucide="flame"></i></span><h3 class="card-title">Brigadas contra incendios</h3></div>
+              <article class="action-card action-line-card">
+                <div class="action-head">
+                  <span class="card-icon"><i data-lucide="flame"></i></span>
+                  <h3 class="card-title">Brigadas contra incendios</h3>
+                </div>
                 <p class="badge badge-sand">Denominación por confirmar</p>
-                <p class="card-text">Prevención y respuesta ante incendios forestales en la subcuenca.</p>
-                <div class="action-stats"><div class="mini-stat"><b>4</b><span>brigadas</span></div><div class="mini-stat"><b>120</b><span>voluntarios</span></div></div>
+                <p class="card-text">Actividades de prevención, vigilancia y respuesta ante incendios forestales para contribuir a la protección de los ecosistemas de la cuenca.</p>
                 <a class="link-arrow" href="#documentos">Ver en el repositorio documental <i data-lucide="arrow-right"></i></a>
               </article>
             </div>
@@ -791,7 +825,7 @@
           <a href="#" data-demo aria-label="Instagram"><i data-lucide="instagram"></i></a>
         </div>
       </div>
-      <div class="footer-col"><p class="footer-title">Navegación</p><a href="#inicio">Inicio</a><a href="#conocenos">Conócenos</a><a href="#noticias">Noticias</a><a href="#contacto">Contacto</a></div>
+      <div class="footer-col"><p class="footer-title">Navegación</p><a href="#inicio">Inicio</a><a href="#conocenos/historia">Conócenos</a><a href="#noticias">Noticias</a><a href="#contacto">Contacto</a></div>
       <div class="footer-col"><p class="footer-title">Acceso rápido</p><a href="#documentos">Documentos</a><a href="#galeria">Galería</a><a href="#agenda">Agenda</a></div>
       <div class="footer-col"><p class="footer-title">Contacto</p><p class="footer-contact"><i data-lucide="map-pin"></i> Av. Ordóñez Lasso s/n, Cuenca — Ecuador</p><p class="footer-contact"><i data-lucide="phone"></i> <a href="tel:+593074100000">(07) 4 100 000</a></p><p class="footer-contact"><i data-lucide="mail"></i> <a href="mailto:contacto@comitemachangara.ec">contacto@comitemachangara.ec</a></p></div>
     </div>
