@@ -692,7 +692,10 @@
 
           <section class="section agenda-upcoming">
             <div class="agenda-head">
-              <h2 class="section-title" id="agenda-events-title">Próximos eventos</h2>
+              <div class="agenda-head-left">
+                <h2 class="section-title" id="agenda-events-title">Próximos eventos</h2>
+                <button class="link-arrow agenda-reset" id="agenda-reset" type="button" hidden><i data-lucide="rotate-ccw"></i> Ver todos los próximos eventos</button>
+              </div>
               <div class="agenda-controls">
                 <button class="icon-btn" type="button" id="agenda-prev" aria-label="Eventos anteriores"><i data-lucide="chevron-left"></i></button>
                 <button class="icon-btn" type="button" id="agenda-next" aria-label="Eventos siguientes"><i data-lucide="chevron-right"></i></button>
@@ -703,7 +706,6 @@
             </div>
             <div class="agenda-dots" id="agenda-dots" role="tablist" aria-label="Posiciones del carrusel"></div>
             <p class="agenda-status" id="agenda-status" role="status" hidden></p>
-            <button class="link-arrow agenda-reset" id="agenda-reset" type="button" hidden>Volver a próximos eventos <i data-lucide="arrow-left"></i></button>
             <p class="note">Contenido demostrativo editable. Los eventos no corresponden a convocatorias oficiales confirmadas.</p>
           </section>
 

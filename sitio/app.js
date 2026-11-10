@@ -259,6 +259,7 @@
   var agendaSelectedDate = null;
   var agendaLastFocus = null;
   var agendaPageStep = 0;
+  var agendaResizeObserver = null;
 
   function toISODate(date) {
     var year = date.getFullYear();
@@ -342,7 +343,8 @@
         '<span><i data-lucide="calendar"></i> ' + formatShortDate(event.date) + "</span>" +
         '<span><i data-lucide="clock"></i> ' + event.time + "</span>" +
         '<span><i data-lucide="map-pin"></i> ' + event.place + "</span>" +
-      "</p>";
+      "</p>" +
+      '<span class="event-open-icon" aria-hidden="true"><i data-lucide="arrow-up-right"></i></span>';
     card.addEventListener("click", function () {
       openAgendaModal(event, card);
     });
@@ -508,7 +510,7 @@
     });
     var prev = $("#agenda-prev");
     var next = $("#agenda-next");
-    if (prev) prev.disabled = carousel.scrollLeft <= 1;
+    if (prev) prev.disabled = carousel.scrollLeft <= 4;
     if (next) next.disabled = atEnd;
   }
 
@@ -529,9 +531,12 @@
     var gap = parseFloat(window.getComputedStyle(track).gap) || 16;
     var cardWidth = cards[0].getBoundingClientRect().width;
     if (!cardWidth) return;
-    var perView = Math.max(1, Math.round((carousel.clientWidth + gap) / (cardWidth + gap)));
+    var perView = 2;
+    if (window.matchMedia("(max-width: 640px)").matches) perView = 1;
     var pages = Math.max(1, Math.ceil(cards.length / perView));
-    agendaPageStep = perView * (cardWidth + gap);
+    agendaPageStep = perView === 1
+      ? cardWidth + gap
+      : carousel.clientWidth + gap;
 
     dots.innerHTML = "";
     for (var i = 0; i < pages; i += 1) {
@@ -605,6 +610,12 @@
         window.requestAnimationFrame(updateAgendaCarouselControls);
       }
     });
+    if (window.ResizeObserver && carousel && !agendaResizeObserver) {
+      agendaResizeObserver = new ResizeObserver(function () {
+        window.requestAnimationFrame(updateAgendaCarouselControls);
+      });
+      agendaResizeObserver.observe(carousel);
+    }
 
     renderAgendaCalendar();
     renderAgendaCarousel(upcomingAgendaEvents(), "upcoming");
